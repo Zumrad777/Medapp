@@ -147,7 +147,7 @@ app.get('/book', (req, res) => {
 });
 
 // MongoDB подключение
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/medapp';
+const MONGODB_URI = process.env.MONGODB_URI || null;
 let db;
 
 // Подключение к MongoDB
@@ -161,6 +161,21 @@ async function connectToDatabase() {
             serverSelectionTimeoutMS: 10000
         };
 
+        // Ensure we have an URI
+        if (!MONGODB_URI) {
+            if (process.env.NODE_ENV === 'production') {
+                throw new Error('MONGODB_URI is not set in environment. Set MONGODB_URI in your deployment configuration.');
+            } else {
+                // development fallback to local DB
+                const devUri = 'mongodb://localhost:27017/medapp';
+                console.log('MONGODB_URI not set — using development fallback:', devUri);
+                await mongoose.connect(devUri, { useNewUrlParser: true, useUnifiedTopology: true });
+                db = mongoose.connection.db;
+                console.log('✅ Подключение к локальному MongoDB установлено (dev fallback)');
+                return db;
+            }
+        }
+
         // Try primary (likely Atlas) connection first
         try {
             const client = await MongoClient.connect(MONGODB_URI, mongoOptions);
@@ -173,7 +188,14 @@ async function connectToDatabase() {
 
             return db;
         } catch (primaryErr) {
-            console.warn('⚠️ Primary MongoDB connection failed:', primaryErr.message);
+            console.warn('⚠️ Primary MongoDB connection failed:', primaryErr && primaryErr.message);
+
+            // In production do not attempt local fallback — fail fast with a clear message
+            if (process.env.NODE_ENV === 'production') {
+                console.error('❌ Cannot connect to MongoDB Atlas in production. Common causes: wrong MONGODB_URI, Atlas IP whitelist does not include this host, or network/DNS issues.');
+                console.error('Primary error:', primaryErr);
+                throw primaryErr;
+            }
 
             // Attempt local fallback for development convenience
             const fallbackUri = 'mongodb://localhost:27017/medapp';
@@ -185,7 +207,7 @@ async function connectToDatabase() {
                 console.log('✅ Подключение к локальному MongoDB установлено (fallback)');
                 return db;
             } catch (fallbackErr) {
-                console.error('❌ Локальное подключение также не удалось:', fallbackErr.message);
+                console.error('❌ Локальное подключение также не удалось:', fallbackErr && fallbackErr.message);
                 throw primaryErr; // rethrow the original primary error for visibility
             }
         }
