@@ -123,7 +123,7 @@ curl https://your-app.up.railway.app/api/health
 ##  Screenshots
 
 ### 1. Home Page
-
+./photo_5215204446680324095_y.jpg
 
 ### 2. Registration Page
 User registration form with validation for:
@@ -131,12 +131,14 @@ User registration form with validation for:
 - Password strength
 - Age verification (18+)
 - Username uniqueness
-
+- 
+./photo_5215204446680324099_y.jpg
 
 
 ### 3. Login Page
 Secure login with email and password authentication.
-![Uploading изображение.png…]()
+
+./photo_5215204446680324100_y.jpg
 
 ### 4. Dashboard
 User dashboard showing:
@@ -144,6 +146,8 @@ User dashboard showing:
 - Upcoming appointments
 - Recent activity
 - Quick action buttons
+
+./photo_5215204446680324102_y.jpg
 
 ### 5. Book Appointment
 Appointment booking form with:
@@ -153,12 +157,16 @@ Appointment booking form with:
 - Symptoms checklist
 - Duration selection
 
+./photo_5215204446680324110_y.jpg
+
 ### 6. Doctors List
 Browse and filter doctors by:
 - Specialization
 - Availability
 - Rating/Reviews
 - Search functionality
+
+./photo_5215204446680324109_y.jpg
 
 ### 7. Appointments
 View all appointments with:
@@ -167,12 +175,16 @@ View all appointments with:
 - Detailed information
 - Cancel/reschedule options
 
+./photo_5215204446680324108_y.jpg
+
 ### 8. Medical Records
-For premium patients and doctors:
+For doctors:
 - View medical history
 - Diagnosis information
 - Prescription details
 - Doctor notes
+
+./photo_5215204446680324117_y.jpg
 
 ### 9. User Profile
 Manage profile information:
@@ -180,3 +192,5 @@ Manage profile information:
 - Contact information
 - Change password
 - Delete account
+
+./photo_5215204446680324113_y.jpg
